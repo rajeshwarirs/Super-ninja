@@ -3,7 +3,7 @@ var ground;
 var ninja,ninjaImage;
 var count=1;
 var tower;
-var buildingsGroup;
+var buildingsGroup, invisibleGroup;
 
 function preload(){
   bg= loadImage("images/bg.png");
@@ -24,6 +24,7 @@ function setup() {
   ninja.addAnimation("ninja",ninjaImage);
 
   buildingsGroup=new Group();
+  invisibleGroup= new Group();
  
 }
 
@@ -49,8 +50,9 @@ function draw() {
     ninja.x=ninja.x-3;
   }
 
-    if(buildingsGroup.isTouching(ninja)){
+    if(invisibleGroup.isTouching(ninja)){
       ninja.velocityY=0;
+      
     }
   
   
@@ -67,20 +69,37 @@ function spawnBuildings(){
     var building = createSprite(displayWidth/2-300,20,30,30);
     building.velocityY=2;
     building.addImage("building",tower);
+
+    var invisibleTop = createSprite(displayWidth/2-325,-120,80,80);
+    invisibleTop.velocityY=2;
+    invisibleTop.visible=false;
+
     count=2;
     }
     else{
       var building = createSprite(displayWidth/2+300,20,30,30);
     building.velocityY=2;
     building.addImage("building",tower);
+
+    var invisibleTop = createSprite(displayWidth/2+275,-120,80,80);
+    invisibleTop.velocityY=2;
+    invisibleTop.visible=false;
+    
     count=1;
     }
 
-    
+  
 
-    //building.debug=true;
+    building.depth = ninja.depth;
+    ninja.depth = ninja.depth + 1;
+
+    building.debug=true;
+    //invisibleTop.debug=true;
+
     building.lifetime=displayHeight;
     buildingsGroup.add(building);
+    
+    invisibleGroup.add(invisibleTop)
 
   }
 }
